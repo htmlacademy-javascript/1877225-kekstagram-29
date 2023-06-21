@@ -1,6 +1,6 @@
 //Проверка длины строки
 function checkString (string, maxLengthString) {
-  if (string === '') {
+  if (!string) {
     return 'Пустое значение';
   }
   return string.length <= maxLengthString;
@@ -11,31 +11,31 @@ checkString('Hello World!', 20);
 
 //Проверка, является ли слово палиндромом
 function checkPalindrome (text) {
-  const invertedText = text.replaceAll(' ', '').toLowerCase();
-  let string = '';
-  for (let i = invertedText.length - 1; i >= 0; i--) {
-    string += invertedText.at(i);
+  const clearedText = text.replace(/\s/g, '').toLowerCase();
+  let res = '';
+  for (let i = clearedText.length - 1; i >= 0; i--) {
+    res += clearedText.at(i);
   }
-  return string === invertedText;
+  return res === clearedText;
 }
 
 checkPalindrome ('топот');
 
 
 //Вывод целого положительного числа из принятой строки
-function getNumbers (string) {
-  const number = string.toString();
-  let count = '';
-  if (typeof(string) === 'number') {
-    count = number.replaceAll('.', '').replaceAll('-', '');
-    return parseInt(count, 10);
+function extractNumber (input) {
+  if (!input) {
+    return NaN;
   }
-  for (let i = 0; i < string.length; i++) {
-    if (!Number.isNaN(parseInt(number[i], 10))) {
-      count += number[i];
+  const inputString = input.toString();
+  let res = '';
+  for (let i = 0; i < inputString.length; i++) {
+    const char = inputString[i];
+    if (!Number.isNaN(parseInt(char, 10))) {
+      res += char;
     }
   }
-  return parseInt(count, 10);
+  return parseInt(res, 10);
 }
 
-getNumbers ('1 кефир, 0.5 батона');
+extractNumber ('1 кефир, 0.5 батона');
