@@ -43,8 +43,8 @@ extractNumber ('1 кефир, 0.5 батона');
 
 //Проверка продолжительности встречи
 function convertHoursToMinutes(timeInHour){
-  const timeParts = timeInHour.split(':');
-  return Number(timeParts[0]) * 60 + Number(timeParts[1]);
+  const [hours, minutes] = timeInHour.split(':');
+  return [hours] * 60 + [minutes];
 }
 
 function checkTime(startWorkingTime, finishWorkingTime, startMeetingTime, durationMeeting) {

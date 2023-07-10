@@ -1,3 +1,2 @@
 import {photoDescriptions} from './data.js';
-
-console.log(photoDescriptions());
+import {picturesContainer} from './thumbnails.js';

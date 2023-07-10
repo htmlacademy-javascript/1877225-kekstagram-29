@@ -41,6 +41,6 @@ const showDescriptionPhoto = () => {
   };
 };
 
-const photoDescriptions = () => Array.from({length: 25, showDescriptionPhoto});
+const photoDescriptions = () => Array.from({length: 25}, showDescriptionPhoto);
 
 export {photoDescriptions};
