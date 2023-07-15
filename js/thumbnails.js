@@ -5,12 +5,13 @@ const pictureTemplate = document.querySelector('#picture').content;
 const thumbnailsDescriptions = photoDescriptions();
 const thumbnailsFragment = document.createDocumentFragment();
 
-thumbnailsDescriptions.forEach(({url, description, likes, comments}) => {
+thumbnailsDescriptions.forEach(({url, description, likes, comments, id}) => {
   const thumbnailElement = pictureTemplate.cloneNode(true);
   thumbnailElement.querySelector('.picture__img').src = url;
   thumbnailElement.querySelector('.picture__img').alt = description;
   thumbnailElement.querySelector('.picture__likes').textContent = likes;
   thumbnailElement.querySelector('.picture__comments').textContent = comments.message.length;
+  thumbnailElement.querySelector('.picture').dataset.thumbnailId = id;
   thumbnailsFragment.appendChild(thumbnailElement);
 });
 

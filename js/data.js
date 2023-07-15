@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator} from './util.js';
+import {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, createIdGenerator} from './util.js';
 
 const NAMES = [
   'Иосиф',
@@ -18,9 +18,10 @@ const MESSAGE = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
+const generateUniqueId = createIdGenerator();
+const generateUniqueUrl = createIdGenerator();
+
 const showDescriptionPhoto = () => {
-  const randomPhotoId = createRandomIdFromRangeGenerator(1, 25);
-  const randomIndexUrl = createRandomIdFromRangeGenerator(1, 25);
   const randomAvatarIndex = createRandomIdFromRangeGenerator(1, 6);
   const randomCommentId = createRandomIdFromRangeGenerator(0, 10000000);
   let randomMessage = '';
@@ -28,13 +29,13 @@ const showDescriptionPhoto = () => {
     randomMessage += getRandomArrayElement(MESSAGE);
   }
   return {
-    id: randomPhotoId(),
-    url: `photos/${randomIndexUrl()}.jpg`,
+    id: generateUniqueId(),
+    url: `photos/${generateUniqueUrl()}.jpg`,
     description: 'Очень крутое и захватывающее описание',
     likes: getRandomInteger(15, 200),
     comments:{
       id: randomCommentId(),
-      avatar: `img/avatar${randomAvatarIndex()}.svg`,
+      avatar: `img/avatar-${randomAvatarIndex()}.svg`,
       message: randomMessage,
       name: getRandomArrayElement(NAMES),
     }
