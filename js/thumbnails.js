@@ -10,7 +10,7 @@ thumbnailsDescriptions.forEach(({url, description, likes, comments, id}) => {
   thumbnailElement.querySelector('.picture__img').src = url;
   thumbnailElement.querySelector('.picture__img').alt = description;
   thumbnailElement.querySelector('.picture__likes').textContent = likes;
-  thumbnailElement.querySelector('.picture__comments').textContent = comments.message.length;
+  thumbnailElement.querySelector('.picture__comments').textContent = comments.length;
   thumbnailElement.querySelector('.picture').dataset.thumbnailId = id;
   thumbnailsFragment.appendChild(thumbnailElement);
 });
