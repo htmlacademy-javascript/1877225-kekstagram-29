@@ -1,4 +1,4 @@
-import {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator} from './util.js';
+import {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, createIdGenerator} from './util.js';
 
 const NAMES = [
   'Иосиф',
@@ -18,29 +18,44 @@ const MESSAGE = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
-const showDescriptionPhoto = () => {
-  const randomPhotoId = createRandomIdFromRangeGenerator(1, 25);
-  const randomIndexUrl = createRandomIdFromRangeGenerator(1, 25);
-  const randomAvatarIndex = createRandomIdFromRangeGenerator(1, 6);
-  const randomCommentId = createRandomIdFromRangeGenerator(0, 10000000);
-  let randomMessage = '';
-  for (let i = 1; i <= getRandomInteger(1, 2); i++) {
-    randomMessage += getRandomArrayElement(MESSAGE);
-  }
+const generateUniqueUrl = createIdGenerator();
+const randomCommentId = createRandomIdFromRangeGenerator(0, 10000000);
+const generateUniqueId = createIdGenerator();
+
+const generateCommentMessages = () => {
+  const messagesCount = getRandomInteger(1, 2);
+  const generateMessageId = createRandomIdFromRangeGenerator(
+    0,
+    MESSAGE.length - 1
+  );
+  const commentMessagesIds = Array.from(
+    { length: messagesCount },
+    generateMessageId
+  );
+  return commentMessagesIds.map((index) => MESSAGE[index]).join();
+};
+
+const createComment = () => {
+  const id = randomCommentId();
+  const avatarId = getRandomInteger(1, 6);
   return {
-    id: randomPhotoId(),
-    url: `photos/${randomIndexUrl()}.jpg`,
-    description: 'Очень крутое и захватывающее описание',
-    likes: getRandomInteger(15, 200),
-    comments:{
-      id: randomCommentId(),
-      avatar: `img/avatar${randomAvatarIndex()}.svg`,
-      message: randomMessage,
-      name: getRandomArrayElement(NAMES),
-    }
+    id,
+    avatar: `img/avatar-${avatarId}.svg`,
+    message: generateCommentMessages(),
+    name: getRandomArrayElement(NAMES),
   };
 };
 
-const photoDescriptions = () => Array.from({length: 25}, showDescriptionPhoto);
+const generateComments = () => Array.from({ length: getRandomInteger(0, 30) }, createComment);
 
-export {photoDescriptions};
+const showDescriptionPhoto = () => ({
+  id: generateUniqueId(),
+  url: `photos/${generateUniqueUrl()}.jpg`,
+  description: 'Очень крутое и захватывающее описание',
+  likes: getRandomInteger(15, 200),
+  comments: generateComments(),
+});
+
+const photoDescriptions = Array.from({length: 25}, showDescriptionPhoto);
+
+export {photoDescriptions, generateComments};
