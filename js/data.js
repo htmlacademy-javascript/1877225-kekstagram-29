@@ -20,7 +20,7 @@ const MESSAGE = [
 
 const generateUniqueUrl = createIdGenerator();
 const randomCommentId = createRandomIdFromRangeGenerator(0, 10000000);
-const commentCounts = getRandomInteger(0, 30);
+const generateUniqueId = createIdGenerator();
 
 const generateCommentMessages = () => {
   const messagesCount = getRandomInteger(1, 2);
@@ -46,19 +46,16 @@ const createComment = () => {
   };
 };
 
-const generateComments = () => Array.from({ length: commentCounts }, createComment);
+const generateComments = () => Array.from({ length: getRandomInteger(0, 30) }, createComment);
 
-const showDescriptionPhoto = () => {
-  const generateUniqueId = createIdGenerator();
-  return {
-    id: generateUniqueId(),
-    url: `photos/${generateUniqueUrl()}.jpg`,
-    description: 'Очень крутое и захватывающее описание',
-    likes: getRandomInteger(15, 200),
-    comments: generateComments(),
-  };
-};
+const showDescriptionPhoto = () => ({
+  id: generateUniqueId(),
+  url: `photos/${generateUniqueUrl()}.jpg`,
+  description: 'Очень крутое и захватывающее описание',
+  likes: getRandomInteger(15, 200),
+  comments: generateComments(),
+});
 
-const photoDescriptions = () => Array.from({length: 25}, showDescriptionPhoto);
+const photoDescriptions = Array.from({length: 25}, showDescriptionPhoto);
 
 export {photoDescriptions, generateComments};

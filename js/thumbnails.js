@@ -2,7 +2,7 @@ import {photoDescriptions} from './data.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content;
-const thumbnailsDescriptions = photoDescriptions();
+const thumbnailsDescriptions = photoDescriptions;
 const thumbnailsFragment = document.createDocumentFragment();
 
 thumbnailsDescriptions.forEach(({url, description, likes, comments, id}) => {

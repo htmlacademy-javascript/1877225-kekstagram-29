@@ -5,12 +5,13 @@ const bigPictureOverlay = document.querySelector('.big-picture');
 const thumbnailPicture = document.querySelectorAll('.picture');
 const body = document.querySelector('body');
 const cancelButton = document.querySelector('.big-picture__cancel');
+const socialCommentCount = document.querySelector('.social__comment-count');
 const commentCount = document.querySelector('.comments-count');
 const commentsLoader = document.querySelector('.comments-loader');
 const bigPictureElement = document.querySelector('.big-picture__img');
 const commentList = document.querySelector('.social__comments');
 const commentTemplate = document.querySelector('#comment').content;
-const pictureDescriptions = photoDescriptions();
+const pictureDescriptions = photoDescriptions;
 const likesCount = document.querySelector('.likes-count');
 const socialCaption = document.querySelector('.social__caption');
 
@@ -54,7 +55,7 @@ document.addEventListener('keydown', (evt) => {
 const addThumbnailClickHandler = function (thumbnail, photo, comments, likes) {
   thumbnail.addEventListener('click', () => {
     bigPictureOverlay.classList.remove('hidden');
-    commentCount.classList.add('hidden');
+    socialCommentCount.classList.add('hidden');
     commentsLoader.classList.add('hidden');
     body.classList.add('modal-open');
     bigPictureElement.querySelector('img').src = photo;
@@ -68,8 +69,8 @@ const addThumbnailClickHandler = function (thumbnail, photo, comments, likes) {
   });
 };
 
-for (let i = 1; i <= thumbnailPicture.length; i++) {
-  addThumbnailClickHandler(thumbnailPicture[i - 1], `photos/${[i]}.jpg`, pictureDescriptions[i].comments, pictureDescriptions[i].likes);
+for (let i = 0; i <= thumbnailPicture.length - 1; i++) {
+  addThumbnailClickHandler(thumbnailPicture[i], `photos/${[i + 1]}.jpg`, pictureDescriptions[i].comments, pictureDescriptions[i].likes);
 }
 
 export {addThumbnailClickHandler};
