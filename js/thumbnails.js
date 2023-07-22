@@ -1,17 +1,18 @@
-import {photoDescriptions} from './data.js';
+import { photoDescriptions } from './data.js';
+import { thumbnailClickHandler } from './full-size-photos.js';
 
 const picturesContainer = document.querySelector('.pictures');
-const pictureTemplate = document.querySelector('#picture').content;
+const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const thumbnailsDescriptions = photoDescriptions;
 const thumbnailsFragment = document.createDocumentFragment();
 
-thumbnailsDescriptions.forEach(({url, description, likes, comments, id}) => {
+thumbnailsDescriptions.forEach(({url, description, likes, comments}) => {
   const thumbnailElement = pictureTemplate.cloneNode(true);
   thumbnailElement.querySelector('.picture__img').src = url;
   thumbnailElement.querySelector('.picture__img').alt = description;
   thumbnailElement.querySelector('.picture__likes').textContent = likes;
   thumbnailElement.querySelector('.picture__comments').textContent = comments.length;
-  thumbnailElement.querySelector('.picture').dataset.thumbnailId = id;
+  thumbnailElement.addEventListener('click', () => thumbnailClickHandler(url, description, likes, comments));
   thumbnailsFragment.appendChild(thumbnailElement);
 });
 
