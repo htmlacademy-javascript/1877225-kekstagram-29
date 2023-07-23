@@ -5,7 +5,7 @@ const imgUploadInput = document.querySelector('.img-upload__input');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const body = document.querySelector('body');
 const imgUploadCancelButton = document.querySelector('.img-upload__cancel');
-const hashtagStructure = /^#[a-zа-яё0-9]{1,19}$/i;
+const hashtagStructure = /^#[a-zа-яё0-9 ]{1,19}$/i;
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 const errorCloseButton = errorTemplate.querySelector('.error__button');
 const hashtagsInput = document.querySelector('.text__hashtags');
@@ -25,6 +25,7 @@ const closeUploadOverlay = () => {
   imgUploadInput.value = '';
   hashtagsInput.value = '';
   descriptionInput.value = '';
+  pristine.reset();
 };
 
 imgUploadCancelButton.addEventListener('click', () => {
@@ -64,7 +65,7 @@ const showSuccessMessage = () => {
   });
 };
 
-const getHashtagArray = (value) => value.trim().split(' ');
+const getHashtagArray = (value) => value.trim().split(' ').filter((tag) => Boolean(tag.length));
 
 const checkUniqueHashtag = (value) => {
   const hashtag = getHashtagArray(value);
@@ -76,7 +77,7 @@ const checkHashtagCount = (value) => {
   return hashtag.length <= 5;
 };
 
-const checkCorrectHashtag = (value) => hashtagStructure.test(value);
+const checkCorrectHashtag = (value) => getHashtagArray(value).every((tag) => hashtagStructure.test(tag));
 
 const checkCommentCount = (value) => value.length < 140;
 
