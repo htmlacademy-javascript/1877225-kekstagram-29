@@ -1,4 +1,5 @@
 import { isEscapeKey } from './util.js';
+import { resetVisual } from './filters.js';
 
 const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadInput = document.querySelector('.img-upload__input');
@@ -26,6 +27,7 @@ const closeUploadOverlay = () => {
   hashtagsInput.value = '';
   descriptionInput.value = '';
   pristine.reset();
+  resetVisual();
 };
 
 imgUploadCancelButton.addEventListener('click', () => {
