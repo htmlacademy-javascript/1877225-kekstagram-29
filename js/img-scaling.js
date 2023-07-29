@@ -8,7 +8,7 @@ const SCALE_MAX = 1;
 const SCALE_STEP = 0.25;
 let scale = 1;
 
-const getScaleValue = (number) => {
+export const getScaleValue = (number) => {
   scaleValue.value = `${number * 100}%`;
   uploadImg.style.transform = `scale(${ number })`;
   scale = number;
