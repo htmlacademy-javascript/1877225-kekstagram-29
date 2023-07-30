@@ -1,5 +1,7 @@
-import { isEscapeKey } from './util.js';
+import { isEscapeKey, showAlert } from './util.js';
 import { resetVisual } from './filters.js';
+import { getScaleValue } from './img-scaling.js';
+import { sendData } from './api.js';
 
 const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadInput = document.querySelector('.img-upload__input');
@@ -13,6 +15,7 @@ const hashtagsInput = document.querySelector('.text__hashtags');
 const descriptionInput = document.querySelector('.text__description');
 const successTemplate = document.querySelector('#success').content.querySelector('.success');
 const successCloseButton = successTemplate.querySelector('.success__button');
+const submitButton = document.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(imgUploadForm, {
   classTo: 'img-upload__field-wrapper',
@@ -20,7 +23,7 @@ const pristine = new Pristine(imgUploadForm, {
   errorTextClass: 'img-upload__field-wrapper',
 });
 
-const closeUploadOverlay = () => {
+export const closeUploadOverlay = () => {
   imgUploadOverlay.classList.add('hidden');
   body.classList.remove('modal-open');
   imgUploadInput.value = '';
@@ -28,6 +31,7 @@ const closeUploadOverlay = () => {
   descriptionInput.value = '';
   pristine.reset();
   resetVisual();
+  getScaleValue(1);
 };
 
 imgUploadCancelButton.addEventListener('click', () => {
@@ -107,12 +111,38 @@ pristine.addValidator(
   'Достигнут лимит 140 символов'
 );
 
-export const checkValidForm = () => {
+const SubmitButtonText = {
+  IDLE: 'Сохранить',
+  SENDING: 'Сохраняю...'
+};
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.IDLE;
+};
+
+export const checkValidForm = (onSuccess) => {
   imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
     if (isValid) {
-      showSuccessMessage();
+      blockSubmitButton();
+      sendData(new FormData(evt.target))
+        .then(() => {
+          onSuccess();
+          showSuccessMessage();
+        })
+        .catch(
+          (err) => {
+            showAlert(err.message);
+          }
+        )
+        .finally(unblockSubmitButton);
     } else {
       showErrorMessage();
     }
