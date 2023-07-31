@@ -6,6 +6,7 @@ import { getData } from './api.js';
 import { debounce, showAlert } from './util.js';
 import { closeUploadOverlay } from './user-form.js';
 import { init as initFilter, getFilteredPictures } from './filtering-user-posts.js';
+import './uploading-photo.js';
 const filters = document.querySelector('.img-filters');
 
 scalingImage();
