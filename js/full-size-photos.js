@@ -41,8 +41,7 @@ const showCommentsParts = (comments) => {
     socialCommentCount.classList.remove('hidden');
     showComments(comments.slice(0, 5));
     const COMMENTS_STEP = 5;
-    commentsLoader.addEventListener('click', () => {
-      console.log('вызываю обработчик');
+    commentsLoader.onclick = () => {
       const n = startCommentsCount + COMMENTS_STEP;
       startCommentsCount = n;
       showComments(comments.slice(0, n));
@@ -51,7 +50,7 @@ const showCommentsParts = (comments) => {
         commentsLoader.classList.add('hidden');
         currentCommentCount.textContent = comments.length;
       }
-    });
+    };
   }
 };
 
