@@ -38,17 +38,26 @@ imgUploadCancelButton.addEventListener('click', () => {
   closeUploadOverlay();
 });
 
-document.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    closeUploadOverlay();
-  }
-});
-
 const stopPropagationEsc = (e) => {
   if (isEscapeKey(e)) {
     e.stopPropagation();
   }
 };
+
+document.addEventListener('keydown', (evt) => {
+  if (isEscapeKey(evt) && !body.contains(errorTemplate)) {
+    closeUploadOverlay();
+  }
+  if (isEscapeKey(evt)) {
+    body.removeChild(errorTemplate);
+  }
+});
+
+document.addEventListener('keydown', (evt) => {
+  if (isEscapeKey(evt)) {
+    body.removeChild(successTemplate);
+  }
+});
 
 imgUploadInput.addEventListener('change', () => {
   imgUploadOverlay.classList.remove('hidden');
@@ -57,11 +66,21 @@ imgUploadInput.addEventListener('change', () => {
   descriptionInput.addEventListener('keydown', stopPropagationEsc);
 });
 
+const hideMessage = (className, template) => {
+  document.addEventListener('click', (evt) => {
+    const modal = evt.target.closest(className);
+    if(!modal) {
+      body.removeChild(template);
+    }
+  });
+};
+
 const showErrorMessage = () => {
   body.appendChild(errorTemplate);
   errorCloseButton.addEventListener('click', () => {
     body.removeChild(errorTemplate);
   });
+  hideMessage('.error__inner', errorTemplate);
 };
 
 const showSuccessMessage = () => {
@@ -69,6 +88,7 @@ const showSuccessMessage = () => {
   successCloseButton.addEventListener('click', () => {
     body.removeChild(successTemplate);
   });
+  hideMessage('.success__inner', successTemplate);
 };
 
 const getHashtagArray = (value) => value.trim().split(' ').filter((tag) => Boolean(tag.length));
