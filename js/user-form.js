@@ -1,4 +1,4 @@
-import { isEscapeKey, showAlert } from './util.js';
+import { isEscapeKey } from './util.js';
 import { resetVisual } from './filters.js';
 import { getScaleValue } from './img-scaling.js';
 import { sendData } from './api.js';
@@ -32,6 +32,7 @@ export const closeUploadOverlay = () => {
   pristine.reset();
   resetVisual();
   getScaleValue(1);
+  imgUploadForm.reset();
 };
 
 imgUploadCancelButton.addEventListener('click', () => {
@@ -45,17 +46,16 @@ const stopPropagationEsc = (e) => {
 };
 
 document.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt) && !body.contains(errorTemplate)) {
-    closeUploadOverlay();
+  if (!isEscapeKey(evt)) {
+    return;
   }
-  if (isEscapeKey(evt)) {
-    body.removeChild(errorTemplate);
-  }
-});
-
-document.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
+  if (body.contains(successTemplate)) {
     body.removeChild(successTemplate);
+  }
+  if (body.contains(errorTemplate)) {
+    body.removeChild(errorTemplate);
+  } else {
+    closeUploadOverlay();
   }
 });
 
@@ -69,7 +69,7 @@ imgUploadInput.addEventListener('change', () => {
 const hideMessage = (className, template) => {
   document.addEventListener('click', (evt) => {
     const modal = evt.target.closest(className);
-    if(!modal) {
+    if(!modal && body.contains(template)) {
       body.removeChild(template);
     }
   });
@@ -77,17 +77,17 @@ const hideMessage = (className, template) => {
 
 const showErrorMessage = () => {
   body.appendChild(errorTemplate);
-  errorCloseButton.addEventListener('click', () => {
+  errorCloseButton.onclick = () => {
     body.removeChild(errorTemplate);
-  });
+  };
   hideMessage('.error__inner', errorTemplate);
 };
 
 const showSuccessMessage = () => {
   body.appendChild(successTemplate);
-  successCloseButton.addEventListener('click', () => {
+  successCloseButton.onclick = () => {
     body.removeChild(successTemplate);
-  });
+  };
   hideMessage('.success__inner', successTemplate);
 };
 
@@ -150,21 +150,16 @@ export const checkValidForm = (onSuccess) => {
   imgUploadForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
-    if (isValid) {
-      blockSubmitButton();
-      sendData(new FormData(evt.target))
-        .then(() => {
-          onSuccess();
-          showSuccessMessage();
-        })
-        .catch(
-          (err) => {
-            showAlert(err.message);
-          }
-        )
-        .finally(unblockSubmitButton);
-    } else {
-      showErrorMessage();
+    if (!isValid) {
+      return;
     }
+    blockSubmitButton();
+    sendData(new FormData(evt.target))
+      .then(() => {
+        onSuccess();
+        showSuccessMessage();
+      })
+      .catch(showErrorMessage)
+      .finally(unblockSubmitButton);
   });
 };

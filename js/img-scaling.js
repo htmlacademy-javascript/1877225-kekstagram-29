@@ -14,7 +14,7 @@ export const getScaleValue = (number) => {
   scale = number;
 };
 
-export const scalingImage = () => {
+export const scaleImage = () => {
   let number = 1;
   scaleButtonSmaller.onclick = () => {
     if (scale <= SCALE_MAX && scale > SCALE_MIN) {
