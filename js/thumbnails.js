@@ -1,4 +1,4 @@
-import { thumbnailClickHandler } from './full-size-photos.js';
+import { addThumbnailClickHandler } from './full-size-photos.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -12,7 +12,7 @@ const getImg = (img) => {
     thumbnailElement.querySelector('.picture__img').alt = description;
     thumbnailElement.querySelector('.picture__likes').textContent = likes;
     thumbnailElement.querySelector('.picture__comments').textContent = comments.length;
-    thumbnailElement.addEventListener('click', () => thumbnailClickHandler(url, description, likes, comments));
+    thumbnailElement.addEventListener('click', () => addThumbnailClickHandler(url, description, likes, comments));
     thumbnailsFragment.appendChild(thumbnailElement);
   });
   picturesContainer.appendChild(thumbnailsFragment);

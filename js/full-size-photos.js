@@ -73,7 +73,7 @@ document.addEventListener('keydown', (evt) => {
   }
 });
 
-export const thumbnailClickHandler = (url, description, likes, comments) => {
+export const addThumbnailClickHandler = (url, description, likes, comments) => {
   bigPictureOverlay.classList.remove('hidden');
   socialCommentCount.classList.add('hidden');
   commentsLoader.classList.add('hidden');
